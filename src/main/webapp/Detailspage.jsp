@@ -1,6 +1,16 @@
+<%@page import="authenticationServlet.loginServlet"%>
 <%@page import="Entity_and_DB.Con_DB"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+	<% Object obj = (Object)session.getAttribute("object");
+		if(obj == null)
+		{
+			response.sendRedirect("page1.jsp");
+			session.setAttribute("fails", "Login first");
+		}
+	
+	%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +22,10 @@
 </head>
 <body>
 	<%@include file="components/navbar.jsp"%>
-
+	
 	<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	
 	Con_DB con = (Con_DB) session.getAttribute("object");
 	%>
 	
@@ -27,7 +39,9 @@
 		<c:remove var="fail"/>
 	</c:if>
 	
-	<div class="container-md text-center pt-5">
+	<%if(con != null){
+		%>
+			<div class="container-md text-center pt-5">
 		<div class="row">
 			<div class="col-md-8 offset-md-4">
 				<div class=" table table-bordered table-hover table-striped table-info">
@@ -59,13 +73,18 @@
 							</tr>
 						</tbody>
 					</table>
-
+					
 				</div>
 			</div>
 		</div>
 
+			<div>
+					<a href="LogoutServlet"><button>Logout</button> </a>
+					</div>
+	<%} %>
+	
+	
 
 	</div>
-
 </body>
 </html>
